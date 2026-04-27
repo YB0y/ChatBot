@@ -1,6 +1,6 @@
 #  **Basic Chatbot (Full-Stack Chatbot Boilerplate — FastAPI + JavaScript UI)**
 
-A minimal full-stack chatbot starter template with a **FastAPI backend** (powered by Groq's hosted LLMs) and a **React + Vite frontend**.
+A minimal full-stack chatbot starter template with a **FastAPI backend** (powered by OpenRouter's hosted LLMs) and a **React + Vite frontend**.
 The backend exposes a simple `/chat` API, and the frontend provides a clean chat interface for interacting with the bot. Lightweight, extendable, and perfect for swapping in other LLMs, RAG systems, or NLP pipelines.
 
 **Live Demo:** [https://basic-chatbot-xi.vercel.app](https://basic-chatbot-xi.vercel.app)
@@ -54,10 +54,11 @@ pip install -r requirements.txt
 Create a `.env` file inside `chatbot-backend/`:
 
 ```
-GROQ_API_KEY=your_groq_api_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
-Get a free key from [Groq Console](https://console.groq.com/keys).
+Get a free key from [OpenRouter](https://openrouter.ai/keys). The default model
+is `meta-llama/llama-3.3-70b-instruct:free`.
 
 ### **Run the FastAPI server**
 
@@ -157,8 +158,8 @@ The goal was to create a **clean, minimal chatbot architecture** that:
 sequenceDiagram
     User->>Frontend: Enter message in chat box
     Frontend->>Backend: POST /chat { user_message }
-    Backend->>Groq: chat.completions.create(user_message)
-    Groq->>Backend: Model response
+    Backend->>OpenRouter: chat.completions.create(user_message)
+    OpenRouter->>Backend: Model response
     Backend->>Frontend: JSON { response }
     Frontend->>User: Render bot message in UI
 ```

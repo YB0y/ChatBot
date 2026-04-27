@@ -4,31 +4,34 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from groq import Groq
+from openai import OpenAI
 from pydantic import BaseModel, Field
 
 # --- Configuration ---
 load_dotenv()
 logger = logging.getLogger(__name__)
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+if not OPENROUTER_API_KEY:
     raise EnvironmentError(
-        "GROQ_API_KEY is not set. Create a .env file in chatbot-backend/ "
-        "with: GROQ_API_KEY=your_key_here (see .env.example)."
+        "OPENROUTER_API_KEY is not set. Create a .env file in chatbot-backend/ "
+        "with: OPENROUTER_API_KEY=your_key_here (see .env.example)."
     )
 
 # --- Model Initialization ---
-MODEL_NAME = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+MODEL_NAME = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
 try:
-    client = Groq(api_key=GROQ_API_KEY)
+    client = OpenAI(
+        api_key=OPENROUTER_API_KEY,
+        base_url="https://openrouter.ai/api/v1",
+    )
 except Exception as e:
-    raise RuntimeError(f"Failed to initialize Groq client: {e}") from e
+    raise RuntimeError(f"Failed to initialize OpenRouter client: {e}") from e
 
 # --- FastAPI App ---
 app = FastAPI(
     title="AI Chatbot API",
-    description="API for interacting with a Groq-hosted LLM.",
+    description="API for interacting with an OpenRouter-hosted LLM.",
     version="1.0.0",
 )
 
